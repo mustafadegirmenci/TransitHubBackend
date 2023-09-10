@@ -374,6 +374,9 @@ namespace Persistence.Migrations
                     b.Property<DateTimeOffset>("RegistrationDate")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
+
                     b.Property<string>("Surname")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

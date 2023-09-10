@@ -14,7 +14,13 @@ public class RegisterHandler : IRequestHandler<RegisterRequest, RegisterResponse
 
     public async Task<RegisterResponse> Handle(RegisterRequest request, CancellationToken cancellationToken)
     {
-        var response = await _authService.RegisterAsync(request.Username, request.Password, request.Name, request.Surname);
+        var response = await _authService.RegisterAsync(
+            request.Username,
+            request.Password,
+            request.Name,
+            request.Surname,
+            request.Role
+        );
 
         return response;
     }

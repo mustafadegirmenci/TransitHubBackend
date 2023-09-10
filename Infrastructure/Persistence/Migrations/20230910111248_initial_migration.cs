@@ -57,6 +57,7 @@ namespace Persistence.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RegistrationDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    Role = table.Column<int>(type: "int", nullable: false),
                     DateCreated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     DateUpdated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     DateDeleted = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)

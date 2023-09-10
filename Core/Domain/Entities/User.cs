@@ -1,4 +1,5 @@
 ﻿using Domain.Common;
+using Domain.Enums;
 
 namespace Domain.Entities;
 
@@ -10,6 +11,7 @@ public class User : BaseEntity
     public string Name { get; set; }
     public string Surname { get; set; }
     public DateTimeOffset RegistrationDate { get; set; }
+    public UserRole Role { get; set; }
     
     public ICollection<Chat> Chats { get; set; }
     public ICollection<Request> Requests { get; set; }

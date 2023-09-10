@@ -3,6 +3,7 @@ using Application.Features.Authorization.Register;
 using Application.Repositories;
 using Application.Services;
 using Domain.Entities;
+using Domain.Enums;
 
 namespace Persistence.Services;
 
@@ -19,7 +20,8 @@ public class AuthService : IAuthService
         _tokenService = tokenService;
     }
 
-    public async Task<RegisterResponse> RegisterAsync(string username, string password, string name, string surname)
+    public async Task<RegisterResponse> RegisterAsync(string username, string password, string name, string surname,
+        UserRole role)
     {
         if (await _userRepository.GetUserByUsernameAsync(username) is not null)
         {
@@ -39,7 +41,9 @@ public class AuthService : IAuthService
             PasswordHash = hashedPassword,
             Name = name,
             Surname = surname,
-            DateCreated = DateTimeOffset.Now
+            Role = role,
+            DateCreated = DateTimeOffset.Now,
+            RegistrationDate = DateTimeOffset.Now
         };
         
         await _userRepository.AddAsync(user);
@@ -81,7 +85,7 @@ public class AuthService : IAuthService
         return new LoginResponse
         {
             LoginSucceeded = true,
-            Token = _tokenService.GenerateToken(user.Username),
+            Token = _tokenService.GenerateToken(user.Username, user.Role),
             Message = "Invalid credentials."
         };
     }

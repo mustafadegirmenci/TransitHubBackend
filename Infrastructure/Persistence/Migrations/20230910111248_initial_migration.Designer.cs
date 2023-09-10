@@ -12,7 +12,7 @@ using Persistence.Context;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230910082140_initial_migration")]
+    [Migration("20230910111248_initial_migration")]
     partial class initial_migration
     {
         /// <inheritdoc />
@@ -376,6 +376,9 @@ namespace Persistence.Migrations
 
                     b.Property<DateTimeOffset>("RegistrationDate")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
 
                     b.Property<string>("Surname")
                         .IsRequired()
