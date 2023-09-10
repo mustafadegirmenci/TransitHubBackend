@@ -10,5 +10,4 @@ public interface IRepository<T> where T : class
     public Task AddAsync(T entity);
     public void Update(T entity);
     public void Remove(T entity);
-    public Task SaveChangesAsync();
 }

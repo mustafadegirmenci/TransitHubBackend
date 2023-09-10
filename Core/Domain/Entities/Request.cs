@@ -10,6 +10,8 @@ public class Request : BaseEntity
     public DateTimeOffset EarliestAcceptableDate { get; set; }
     public DateTimeOffset LatestAcceptableDate { get; set; }
     
+    public int UserId { get; set; }
     public User User { get; set; }
+    
     public ICollection<Response> Response { get; set; }
 }

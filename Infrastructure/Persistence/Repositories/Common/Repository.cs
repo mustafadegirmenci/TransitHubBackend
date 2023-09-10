@@ -12,7 +12,7 @@ public class Repository<T> : IRepository<T> where T : class
     public Repository(DbContext context)
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
-        _dbSet = _context.Set<T>();
+        _dbSet = context.Set<T>();
     }
 
     public async Task<T> GetByIdAsync(object id)
@@ -33,12 +33,14 @@ public class Repository<T> : IRepository<T> where T : class
     public async Task AddAsync(T entity)
     {
         await _dbSet.AddAsync(entity);
+        await _context.SaveChangesAsync();
     }
 
     public void Update(T entity)
     {
         _dbSet.Attach(entity);
         _context.Entry(entity).State = EntityState.Modified;
+        _context.SaveChanges();
     }
 
     public void Remove(T entity)
@@ -48,10 +50,6 @@ public class Repository<T> : IRepository<T> where T : class
             _dbSet.Attach(entity);
         }
         _dbSet.Remove(entity);
-    }
-
-    public async Task SaveChangesAsync()
-    {
-        await _context.SaveChangesAsync();
+        _context.SaveChanges();
     }
 }

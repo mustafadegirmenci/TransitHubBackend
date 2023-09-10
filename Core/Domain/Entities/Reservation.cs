@@ -8,5 +8,6 @@ public class Reservation : BaseEntity
     public DateTimeOffset Date { get; set; }
     public ReservationStatus Status { get; set; }
     
+    public int ResponseId { get; set; }
     public Response Response { get; set; }
 }
