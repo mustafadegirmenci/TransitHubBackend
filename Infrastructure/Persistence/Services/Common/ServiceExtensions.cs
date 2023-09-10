@@ -28,6 +28,7 @@ public static class ServiceExtensions
         services.AddScoped<IVehicleRepository, VehicleRepository>();
 
         services.AddTransient<IHashingService, HashingService>();
+        services.AddTransient<ITokenService, TokenService>();
         services.AddTransient<IAuthService, AuthService>();
     }
 }

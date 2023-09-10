@@ -1,3 +1,5 @@
+using Application.Features.Authorization.Login;
+using Application.Features.Authorization.Register;
 using Application.Repositories;
 using Application.Services;
 using Domain.Entities;
@@ -8,18 +10,25 @@ public class AuthService : IAuthService
 {
     private readonly IUserRepository _userRepository;
     private readonly IHashingService _hashingService;
+    private readonly ITokenService _tokenService;
 
-    public AuthService(IUserRepository userRepository, IHashingService hashingService)
+    public AuthService(IUserRepository userRepository, IHashingService hashingService, ITokenService tokenService)
     {
         _userRepository = userRepository;
         _hashingService = hashingService;
+        _tokenService = tokenService;
     }
 
-    public async Task<User?> RegisterAsync(string username, string password, string name, string surname)
+    public async Task<RegisterResponse> RegisterAsync(string username, string password, string name, string surname)
     {
-        if (await _userRepository.GetUserByUsernameAsync(username) != null)
+        if (await _userRepository.GetUserByUsernameAsync(username) is not null)
         {
-            throw new ApplicationException("Username is already taken.");
+            return new RegisterResponse
+            {
+                RegistrationSucceeded = false,
+                UserId = null,
+                Message = "The username is already taken."
+            };
         }
 
         var hashedPassword = _hashingService.Hash(password);
@@ -32,9 +41,48 @@ public class AuthService : IAuthService
             Surname = surname,
             DateCreated = DateTimeOffset.Now
         };
-
+        
         await _userRepository.AddAsync(user);
 
-        return user;
+        return new RegisterResponse
+        {
+            RegistrationSucceeded = true,
+            UserId = user.Id,
+            Message = "Registration successful."
+        };
+    }
+    
+    public async Task<LoginResponse> LoginAsync(string username, string password)
+    {
+        var user = await _userRepository.GetUserByUsernameAsync(username);
+
+        if (user is null)
+        {
+            return new LoginResponse
+            {
+                LoginSucceeded = false,
+                Token = null,
+                Message = "User not found."
+            };
+        }
+            
+        var isPasswordValid = _hashingService.Verify(user.PasswordHash, password);
+
+        if (!isPasswordValid)
+        {
+            return new LoginResponse
+            {
+                LoginSucceeded = false,
+                Token = null,
+                Message = "Invalid credentials."
+            };
+        }
+
+        return new LoginResponse
+        {
+            LoginSucceeded = true,
+            Token = _tokenService.GenerateToken(user.Username),
+            Message = "Invalid credentials."
+        };
     }
 }

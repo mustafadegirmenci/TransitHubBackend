@@ -8,4 +8,9 @@ public class HashingService : IHashingService
     {
         return initialValue;
     }
+
+    public bool Verify(string hash, string value)
+    {
+        return Hash(value) == hash;
+    }
 }
