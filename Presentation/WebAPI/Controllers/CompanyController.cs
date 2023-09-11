@@ -1,4 +1,6 @@
 using System.Security.Claims;
+using Application.Features.Company.AssignDriver;
+using Application.Features.Company.AssignVehicle;
 using Application.Features.Company.CreateDriver;
 using Application.Features.Company.CreateTeam;
 using Application.Features.Company.CreateVehicle;
@@ -73,6 +75,34 @@ public class CompanyController : ControllerBase
         
         request.CompanyId = userId;
         
+        try
+        {
+            await _mediator.Send(request);
+            return Ok();
+        }
+        catch
+        {
+            return BadRequest();
+        }
+    }
+        
+    [HttpPost("vehicle/assign")]
+    public async Task<IActionResult> AssignVehicle([FromBody] AssignVehicleRequest request)
+    {
+        try
+        {
+            await _mediator.Send(request);
+            return Ok();
+        }
+        catch
+        {
+            return BadRequest();
+        }
+    }
+            
+    [HttpPost("driver/assign")]
+    public async Task<IActionResult> AssignDriver([FromBody] AssignDriverRequest request)
+    {
         try
         {
             await _mediator.Send(request);
