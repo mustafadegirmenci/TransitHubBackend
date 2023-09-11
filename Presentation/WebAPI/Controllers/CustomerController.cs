@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using Application.Features.Customer.CreateRequest;
+using Application.Features.Customer.CreateReservation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,29 +24,33 @@ public class CustomerController : ControllerBase
     {
         var userIdClaim =  User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         
-        if (userIdClaim is null)
-        {
-            return Unauthorized();
-        }
+        if (userIdClaim is null) return Unauthorized();
+        if (!int.TryParse(userIdClaim, out var userId)) return BadRequest();
         
-        if (int.TryParse(userIdClaim, out var userId))
+        request.UserId = userId;
+
+        try
         {
-            request.UserId = userId;
+            await _mediator.Send(request);
+            return Ok();
         }
-        else
+        catch (Exception e)
         {
             return BadRequest();
         }
-
-        var response = await _mediator.Send(request);
-
-        if (response.IsSuccess)
+    }
+    
+    [HttpPost("reservation/create")]
+    public async Task<IActionResult> CreateReservation([FromBody] CreateReservationRequest request)
+    {
+        try
         {
+            await _mediator.Send(request);
             return Ok();
         }
-        else
+        catch (Exception e)
         {
-            return BadRequest(response.Message);
+            return BadRequest();
         }
     }
 }
