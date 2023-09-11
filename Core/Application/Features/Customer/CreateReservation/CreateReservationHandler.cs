@@ -7,7 +7,7 @@ namespace Application.Features.Customer.CreateReservation;
 public class CreateReservationHandler : IRequestHandler<CreateReservationRequest, CreateReservationResponse>
 {
     private readonly IReservationRepository _reservationRepository;
-    
+
     public CreateReservationHandler(IReservationRepository reservationRepository)
     {
         _reservationRepository = reservationRepository;
@@ -23,6 +23,8 @@ public class CreateReservationHandler : IRequestHandler<CreateReservationRequest
         };
         
         var newReservationId = await _reservationRepository.AddAsync(newReservation);
+        
+        //TODO: Update response status
 
         return new CreateReservationResponse
         {
