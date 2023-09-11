@@ -1,6 +1,6 @@
 using System.Security.Claims;
+using Application.Features.Company.CreateTeam;
 using Application.Features.Company.GetAllRequests;
-using Application.Features.Customer.CreateRequest;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +33,27 @@ public class CompanyController : ControllerBase
         {
             var response = await _mediator.Send(new GetAllRequestsRequest());
             return Ok(response);
+        }
+        catch
+        {
+            return BadRequest();
+        }
+    }
+    
+    [HttpPost("team/create")]
+    public async Task<IActionResult> CreateTeam([FromBody] CreateTeamRequest request)
+    {
+        var userIdClaim =  User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        
+        if (userIdClaim is null) return Unauthorized();
+        if (!int.TryParse(userIdClaim, out var userId)) return BadRequest();
+        
+        request.CompanyId = userId;
+        
+        try
+        {
+            await _mediator.Send(request);
+            return Ok();
         }
         catch
         {
