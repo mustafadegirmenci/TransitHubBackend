@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Application.Features.Company.CreateDriver;
 using Application.Features.Company.CreateTeam;
 using Application.Features.Company.CreateVehicle;
 using Application.Features.Company.GetAllRequests;
@@ -64,6 +65,27 @@ public class CompanyController : ControllerBase
     
     [HttpPost("vehicle/create")]
     public async Task<IActionResult> CreateVehicle([FromBody] CreateVehicleRequest request)
+    {
+        var userIdClaim =  User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        
+        if (userIdClaim is null) return Unauthorized();
+        if (!int.TryParse(userIdClaim, out var userId)) return BadRequest();
+        
+        request.CompanyId = userId;
+        
+        try
+        {
+            await _mediator.Send(request);
+            return Ok();
+        }
+        catch
+        {
+            return BadRequest();
+        }
+    }
+    
+    [HttpPost("driver/create")]
+    public async Task<IActionResult> CreateDriver([FromBody] CreateDriverRequest request)
     {
         var userIdClaim =  User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         
