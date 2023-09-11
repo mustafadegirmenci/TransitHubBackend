@@ -8,5 +8,6 @@ public interface IAuthService
 {
     public Task<RegisterResponse> RegisterAsync(string username, string password, string name, string surname,
         UserRole role);
-    Task<LoginResponse> LoginAsync(string username, string password);
+    
+    public Task<LoginResponse> LoginAsync(string username, string password);
 }

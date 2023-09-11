@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Text;
 using Application.Repositories;
 using Application.Services;
@@ -11,7 +12,6 @@ using Persistence.Context;
 using Persistence.Repositories;
 
 namespace Persistence.Services.Common;
-
 
 public static class ServiceExtensions
 {
@@ -34,11 +34,14 @@ public static class ServiceExtensions
         services.AddTransient<IHashingService, HashingService>();
         services.AddTransient<ITokenService, TokenService>();
         services.AddTransient<IAuthService, AuthService>();
+
+        services.AddHttpContextAccessor();
         
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
         }).AddJwtBearer(options =>
         {
             options.TokenValidationParameters = new TokenValidationParameters
@@ -53,11 +56,11 @@ public static class ServiceExtensions
         
         services.AddAuthorization(options =>
         {
-            options.AddPolicy("UserPolicy", policy =>
-                policy.RequireClaim("role", "User"));
+            options.AddPolicy("CustomerPolicy", policy =>
+                policy.RequireClaim(ClaimTypes.Role, "Customer"));
     
             options.AddPolicy("CompanyPolicy", policy =>
-                policy.RequireClaim("role", "Company"));
+                policy.RequireClaim(ClaimTypes.Role, "Company"));
         });
     }
 }

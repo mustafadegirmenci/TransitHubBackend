@@ -1,8 +1,8 @@
-using Domain.Enums;
+using Domain.Entities;
 
 namespace Application.Services;
 
 public interface ITokenService
 {
-    public string GenerateToken(string seed, UserRole userRole);
+    public string GenerateToken(User user);
 }

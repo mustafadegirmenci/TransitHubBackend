@@ -1,10 +1,11 @@
 using System.Linq.Expressions;
 using Application.Repositories.Common;
+using Domain.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Repositories.Common;
 
-public class Repository<T> : IRepository<T> where T : class
+public class Repository<T> : IRepository<T> where T : BaseEntity
 {
     private readonly DbContext _context;
     private readonly DbSet<T> _dbSet;
@@ -30,10 +31,11 @@ public class Repository<T> : IRepository<T> where T : class
         return _dbSet.Where(predicate);
     }
 
-    public async Task AddAsync(T entity)
+    public async Task<int> AddAsync(T entity)
     {
         await _dbSet.AddAsync(entity);
         await _context.SaveChangesAsync();
+        return entity.Id;
     }
 
     public void Update(T entity)

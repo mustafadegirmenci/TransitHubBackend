@@ -8,5 +8,4 @@ public class Message : BaseEntity
     public DateTimeOffset DateSent { get; set; }
     
     public int ChatId { get; set; }
-    public Chat Chat { get; set; }
 }

@@ -18,10 +18,7 @@ namespace Persistence.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FoundingDate = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DateCreated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    DateUpdated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    DateDeleted = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
+                    FoundingDate = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -36,10 +33,7 @@ namespace Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ExperienceInYears = table.Column<int>(type: "int", nullable: false),
-                    DateCreated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    DateUpdated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    DateDeleted = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
+                    ExperienceInYears = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -57,10 +51,7 @@ namespace Persistence.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RegistrationDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    Role = table.Column<int>(type: "int", nullable: false),
-                    DateCreated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    DateUpdated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    DateDeleted = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
+                    Role = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -75,10 +66,7 @@ namespace Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Body = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CompanyId = table.Column<int>(type: "int", nullable: false),
-                    DateCreated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    DateUpdated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    DateDeleted = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
+                    CompanyId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -99,10 +87,7 @@ namespace Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CompanyId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    DateCreated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    DateUpdated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    DateDeleted = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
+                    UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -131,10 +116,7 @@ namespace Persistence.Migrations
                     TransportationType = table.Column<int>(type: "int", nullable: false),
                     EarliestAcceptableDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     LatestAcceptableDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    DateCreated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    DateUpdated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    DateDeleted = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
+                    UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -155,10 +137,7 @@ namespace Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Body = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateSent = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    ChatId = table.Column<int>(type: "int", nullable: false),
-                    DateCreated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    DateUpdated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    DateDeleted = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
+                    ChatId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -181,10 +160,7 @@ namespace Persistence.Migrations
                     TeamId = table.Column<int>(type: "int", nullable: false),
                     CompanyId = table.Column<int>(type: "int", nullable: false),
                     RequestId = table.Column<int>(type: "int", nullable: false),
-                    ReservationId = table.Column<int>(type: "int", nullable: false),
-                    DateCreated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    DateUpdated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    DateDeleted = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
+                    ReservationId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -211,10 +187,7 @@ namespace Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Date = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
-                    ResponseId = table.Column<int>(type: "int", nullable: false),
-                    DateCreated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    DateUpdated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    DateDeleted = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
+                    ResponseId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -236,10 +209,7 @@ namespace Persistence.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CompanyId = table.Column<int>(type: "int", nullable: false),
                     ResponseId = table.Column<int>(type: "int", nullable: false),
-                    ResponseId1 = table.Column<int>(type: "int", nullable: false),
-                    DateCreated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    DateUpdated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    DateDeleted = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
+                    ResponseId1 = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -272,10 +242,7 @@ namespace Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     VehicleType = table.Column<int>(type: "int", nullable: false),
                     TeamId = table.Column<int>(type: "int", nullable: false),
-                    DriverId = table.Column<int>(type: "int", nullable: false),
-                    DateCreated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    DateUpdated = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    DateDeleted = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
+                    DriverId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

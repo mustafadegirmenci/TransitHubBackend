@@ -1,14 +1,12 @@
-﻿using Domain.Common;
 using Domain.Enums;
+using MediatR;
 
-namespace Domain.Entities;
+namespace Application.Features.Customer.CreateRequest;
 
-public class Request : BaseEntity
+public class CreateRequestRequest : IRequest<CreateRequestResponse>
 {
-    public RequestStatus Status { get; set; }
     public TransportationType TransportationType { get; set; }
     public DateTimeOffset EarliestAcceptableDate { get; set; }
     public DateTimeOffset LatestAcceptableDate { get; set; }
-    
     public int UserId { get; set; }
 }

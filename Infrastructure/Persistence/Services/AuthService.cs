@@ -42,7 +42,6 @@ public class AuthService : IAuthService
             Name = name,
             Surname = surname,
             Role = role,
-            DateCreated = DateTimeOffset.Now,
             RegistrationDate = DateTimeOffset.Now
         };
         
@@ -85,7 +84,7 @@ public class AuthService : IAuthService
         return new LoginResponse
         {
             LoginSucceeded = true,
-            Token = _tokenService.GenerateToken(user.Username, user.Role),
+            Token = _tokenService.GenerateToken(user),
             Message = "Invalid credentials."
         };
     }
