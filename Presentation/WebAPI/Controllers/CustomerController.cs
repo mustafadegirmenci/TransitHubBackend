@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers;
-
+    
+[Authorize(Policy = "CustomerPolicy")]
 [Route("api/customer")]
 [ApiController]
 public class CustomerController : ControllerBase
@@ -16,8 +17,7 @@ public class CustomerController : ControllerBase
     {
         _mediator = mediator;
     }
-    
-    [Authorize(Policy = "CustomerPolicy")]
+
     [HttpPost("request/create")]
     public async Task<IActionResult> CreateRequest([FromBody] CreateRequestRequest request)
     {
