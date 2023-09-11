@@ -1,6 +1,6 @@
 using Application.Features.Authorization.Login;
 using Application.Features.Authorization.Register;
-using Application.Repositories;
+using Application.Repositories.Entity;
 using Application.Services;
 using Domain.Entities;
 using Domain.Enums;

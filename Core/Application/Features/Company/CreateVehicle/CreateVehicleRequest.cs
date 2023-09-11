@@ -1,9 +1,9 @@
-﻿using Domain.Common;
 using Domain.Enums;
+using MediatR;
 
-namespace Domain.Entities;
+namespace Application.Features.Company.CreateVehicle;
 
-public class Vehicle : BaseEntity
+public class CreateVehicleRequest : IRequest<CreateVehicleResponse>
 {
     public string Brand { get; set; }
     public string Model { get; set; }

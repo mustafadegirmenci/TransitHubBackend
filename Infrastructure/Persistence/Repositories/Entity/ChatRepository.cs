@@ -1,9 +1,9 @@
-using Application.Repositories;
+using Application.Repositories.Entity;
 using Domain.Entities;
 using Persistence.Context;
 using Persistence.Repositories.Common;
 
-namespace Persistence.Repositories;
+namespace Persistence.Repositories.Entity;
 
 public class ChatRepository : Repository<Chat>, IChatRepository
 {

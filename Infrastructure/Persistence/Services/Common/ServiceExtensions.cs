@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using System.Text;
-using Application.Repositories;
+using Application.Repositories.Entity;
+using Application.Repositories.Relationship;
 using Application.Services;
 using Domain.Constants;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -9,7 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Persistence.Context;
-using Persistence.Repositories;
+using Persistence.Repositories.Entity;
+using Persistence.Repositories.Relationship;
 
 namespace Persistence.Services.Common;
 
@@ -30,6 +32,8 @@ public static class ServiceExtensions
         services.AddScoped<ITeamRepository, TeamRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IVehicleRepository, VehicleRepository>();
+        
+        services.AddScoped<ITeamVehicleRepository, TeamVehicleRepository>();
 
         services.AddTransient<IHashingService, HashingService>();
         services.AddTransient<ITokenService, TokenService>();

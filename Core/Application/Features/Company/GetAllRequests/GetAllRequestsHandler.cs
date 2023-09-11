@@ -1,6 +1,4 @@
-using Application.Repositories;
-using Domain.Entities;
-using Domain.Enums;
+using Application.Repositories.Entity;
 using MediatR;
 
 namespace Application.Features.Company.GetAllRequests;

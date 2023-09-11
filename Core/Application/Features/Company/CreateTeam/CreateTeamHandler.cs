@@ -1,6 +1,5 @@
-using Application.Repositories;
+using Application.Repositories.Entity;
 using Domain.Entities;
-using Domain.Enums;
 using MediatR;
 
 namespace Application.Features.Company.CreateTeam;

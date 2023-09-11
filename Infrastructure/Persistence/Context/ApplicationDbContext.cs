@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Relationships;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Context;
@@ -18,6 +19,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<Team> Teams { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Vehicle> Vehicles { get; set; }
+    
+    public DbSet<TeamVehicle> TeamVehicleRelationships { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
