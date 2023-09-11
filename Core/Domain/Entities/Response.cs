@@ -9,5 +9,5 @@ public class Response : BaseEntity
     
     public int TeamId { get; set; }
     public int RequestId { get; set; }
-    public int ReservationId { get; set; }
+    public int Price { get; set; }
 }

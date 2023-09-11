@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Application.Features.Company.AssignDriver;
 using Application.Features.Company.AssignVehicle;
 using Application.Features.Company.CreateDriver;
+using Application.Features.Company.CreateResponse;
 using Application.Features.Company.CreateTeam;
 using Application.Features.Company.CreateVehicle;
 using Application.Features.Company.GetAllRequests;
@@ -124,6 +125,20 @@ public class CompanyController : ControllerBase
         
         request.CompanyId = userId;
         
+        try
+        {
+            await _mediator.Send(request);
+            return Ok();
+        }
+        catch
+        {
+            return BadRequest();
+        }
+    }
+    
+    [HttpPost("response/create")]
+    public async Task<IActionResult> CreateResponse([FromBody] CreateResponseRequest request)
+    {
         try
         {
             await _mediator.Send(request);
