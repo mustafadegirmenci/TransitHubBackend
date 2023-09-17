@@ -18,8 +18,7 @@ public static class ServiceExtensions
     public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<ApplicationDbContext>(opt => opt.UseSqlServer(configuration.GetConnectionString("conn")));
-
-        services.AddScoped<IChatRepository, ChatRepository>();
+        
         services.AddScoped<ICompanyRepository, CompanyRepository>();
         services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<IMessageRepository, MessageRepository>();
@@ -31,6 +30,9 @@ public static class ServiceExtensions
         services.AddTransient<IHashingService, HashingService>();
         services.AddTransient<ITokenService, TokenService>();
         services.AddTransient<IAuthService, AuthService>();
+        
+        services.AddScoped<IDriverRepository, DriverRepository>();
+        services.AddScoped<IVehicleRepository, VehicleRepository>();
 
         services.AddHttpContextAccessor();
         

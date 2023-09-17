@@ -20,11 +20,9 @@ public class CreateOfferHandler : IRequestHandler<CreateOfferRequest, CreateOffe
             RequestId = request.RequestId,
             TeamSize = request.TeamSize,
             Price = request.Price,
-            DriverName = request.DriverName,
-            DriverSurname = request.DriverSurname,
-            VehicleBrand = request.VehicleBrand,
-            VehicleModel = request.VehicleModel,
-            VehicleYear = request.VehicleYear
+            CompanyId = request.CompanyId,
+            VehicleId = request.VehicleId,
+            DriverId = request.DriverId
         };
         
         var newResponseId = await _offerRepository.AddAsync(newResponse);

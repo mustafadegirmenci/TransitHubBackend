@@ -1,7 +1,10 @@
 using System.Security.Claims;
+using Application.Features.Common.GetInfoOfCompany;
 using Application.Features.Company.Authorization.Login;
 using Application.Features.Company.Authorization.Register;
+using Application.Features.Company.CreateDriver;
 using Application.Features.Company.CreateResponse;
+using Application.Features.Company.CreateVehicle;
 using Application.Features.Company.GetAllRequests;
 using Application.Features.Company.GetCompanyInfo;
 using MediatR;
@@ -92,7 +95,7 @@ public class CompanyController : ControllerBase
         }
     }
   
-    [HttpGet("get")]
+    [HttpGet("getinfowithoutcompanyid")]
     public async Task<IActionResult> GetCompanyInfo()
     {
         var userIdClaim =  User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -100,7 +103,7 @@ public class CompanyController : ControllerBase
         if (userIdClaim is null) return Unauthorized();
         if (!int.TryParse(userIdClaim, out var companyId)) return BadRequest();
 
-        var request = new GetCompanyInfoRequest
+        var request = new GetInfoOfCompanyRequest
         {
             CompanyId = companyId
         };
@@ -115,10 +118,60 @@ public class CompanyController : ControllerBase
             return BadRequest();
         }
     }
-  
+
     [HttpPost("offer/create")]
     public async Task<IActionResult> CreateOffer([FromBody] CreateOfferRequest request)
     {
+        var userIdClaim =  User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        
+        if (userIdClaim is null) return Unauthorized();
+        if (!int.TryParse(userIdClaim, out var companyId)) return BadRequest();
+
+        request.CompanyId = companyId;
+        
+        try
+        {
+            await _mediator.Send(request);
+            return Ok();
+        }
+        catch
+        {
+            return BadRequest();
+        }
+    }
+    
+    [AllowAnonymous]
+    [HttpPost("driver/create")]
+    public async Task<IActionResult> CreateDriver([FromBody] CreateDriverRequest request)
+    {
+        var userIdClaim =  User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        
+        if (userIdClaim is null) return Unauthorized();
+        if (!int.TryParse(userIdClaim, out var companyId)) return BadRequest();
+
+        request.CompanyId = companyId;
+        
+        try
+        {
+            await _mediator.Send(request);
+            return Ok();
+        }
+        catch
+        {
+            return BadRequest();
+        }
+    }  
+    
+    [HttpPost("vehicle/create")]
+    public async Task<IActionResult> CreateVehicle([FromBody] CreateVehicleRequest request)
+    {
+        var userIdClaim =  User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        
+        if (userIdClaim is null) return Unauthorized();
+        if (!int.TryParse(userIdClaim, out var companyId)) return BadRequest();
+
+        request.CompanyId = companyId;
+        
         try
         {
             await _mediator.Send(request);

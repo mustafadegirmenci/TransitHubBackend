@@ -5,9 +5,9 @@ using Persistence.Repositories.Common;
 
 namespace Persistence.Repositories.Entity;
 
-public class ChatRepository : Repository<Chat>, IChatRepository
+public class VehicleRepository : Repository<Vehicle>, IVehicleRepository
 {
-    public ChatRepository(ApplicationDbContext context) : base(context)
+    public VehicleRepository(ApplicationDbContext context) : base(context)
     {
     }
 }

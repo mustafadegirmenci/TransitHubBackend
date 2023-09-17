@@ -1,6 +1,6 @@
-namespace Application.Features.Company.GetCompanyInfo;
+namespace Application.Features.Common.GetInfoOfCompany;
 
-public class GetCompanyInfoResponse
+public class GetInfoOfCompanyResponse
 {
     public string Name { get; set; }
     public string FoundingDate { get; set; }

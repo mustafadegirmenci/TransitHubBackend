@@ -5,6 +5,7 @@ using Application.Features.Customer.CreateRequest;
 using Application.Features.Customer.CreateReservation;
 using Application.Features.Customer.GetCustomerInfo;
 using Application.Features.Customer.GetOffers;
+using Application.Features.Customer.GetRequestInfo;
 using Application.Features.Customer.GetRequestsById;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -153,6 +154,20 @@ public class CustomerController : ControllerBase
         {
             var offers = await _mediator.Send(request);
             return Ok(offers.Offers);
+        }
+        catch
+        {
+            return BadRequest();
+        }
+    }
+    
+    [HttpGet("request/get/{requestId}")]
+    public async Task<IActionResult> GetRequestInfo(int requestId)
+    {
+        try
+        {
+            var response = await _mediator.Send(new GetRequestInfoRequest { RequestId = requestId });
+            return Ok(response);
         }
         catch
         {

@@ -3,4 +3,4 @@ using Domain.Entities;
 
 namespace Application.Repositories.Entity;
 
-public interface IChatRepository : IRepository<Chat> { }
+public interface IVehicleRepository : IRepository<Vehicle> { }

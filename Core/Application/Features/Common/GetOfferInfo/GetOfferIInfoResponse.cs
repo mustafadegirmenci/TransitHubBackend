@@ -1,12 +1,7 @@
-﻿using Domain.Common;
-using Domain.Enums;
+namespace Application.Features.Common.GetOfferInfo;
 
-namespace Domain.Entities;
-
-public class Offer : BaseEntity
+public class GetOfferInfoResponse
 {
-    public OfferStatus Status { get; set; }
-    
     public int RequestId { get; set; }
     public int TeamSize { get; set; }
     public int Price { get; set; }

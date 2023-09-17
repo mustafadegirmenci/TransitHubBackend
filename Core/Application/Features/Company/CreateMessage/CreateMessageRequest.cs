@@ -1,13 +1,14 @@
-﻿using Domain.Common;
+using MediatR;
 
-namespace Domain.Entities;
+namespace Application.Features.Company.CreateMessage;
 
-public class Message : BaseEntity
+public class CreateMessageRequest : IRequest<CreateMessageResponse>
 {
     public string Body { get; set; }
     public DateTimeOffset DateSent { get; set; }
     
     public int OfferId { get; set; }
+    
     public int? CustomerId { get; set; }
     public int? CompanyId { get; set; }
 }
