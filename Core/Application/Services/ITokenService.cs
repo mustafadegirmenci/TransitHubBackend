@@ -4,5 +4,5 @@ namespace Application.Services;
 
 public interface ITokenService
 {
-    public string GenerateToken(User user);
+    public string GenerateToken(BaseUser user);
 }

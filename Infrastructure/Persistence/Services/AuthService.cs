@@ -1,5 +1,7 @@
-using Application.Features.Authorization.Login;
-using Application.Features.Authorization.Register;
+using Application.Features.Company.Authorization.Login;
+using Application.Features.Company.Authorization.Register;
+using Application.Features.Customer.Authorization.Login;
+using Application.Features.Customer.Authorization.Register;
 using Application.Repositories.Entity;
 using Application.Services;
 using Domain.Entities;
@@ -9,63 +11,59 @@ namespace Persistence.Services;
 
 public class AuthService : IAuthService
 {
-    private readonly IUserRepository _userRepository;
+    private readonly ICustomerRepository _customerRepository;
+    private readonly ICompanyRepository _companyRepository;
     private readonly IHashingService _hashingService;
     private readonly ITokenService _tokenService;
 
-    public AuthService(IUserRepository userRepository, IHashingService hashingService, ITokenService tokenService)
+    public AuthService(ICustomerRepository customerRepository, IHashingService hashingService, ITokenService tokenService, ICompanyRepository companyRepository)
     {
-        _userRepository = userRepository;
+        _customerRepository = customerRepository;
         _hashingService = hashingService;
         _tokenService = tokenService;
+        _companyRepository = companyRepository;
     }
 
-    public async Task<RegisterResponse> RegisterAsync(string username, string password, string name, string surname,
-        UserRole role)
+    public async Task<RegisterCustomerResponse> RegisterCustomerAsync(string email, string password, string name, string surname)
     {
-        if (await _userRepository.GetUserByUsernameAsync(username) is not null)
+        if (await _customerRepository.GetCustomerByEmailAsync(email) is not null)
         {
-            return new RegisterResponse
+            return new RegisterCustomerResponse
             {
-                RegistrationSucceeded = false,
-                UserId = null,
-                Message = "The username is already taken."
+                Token = null,
             };
         }
 
         var hashedPassword = _hashingService.Hash(password);
 
-        var user = new User
+        var user = new Customer
         {
-            Username = username,
+            Email = email,
             PasswordHash = hashedPassword,
             Name = name,
             Surname = surname,
-            Role = role,
+            Role = UserRole.Customer,
             RegistrationDate = DateTimeOffset.Now
         };
         
-        await _userRepository.AddAsync(user);
+        await _customerRepository.AddAsync(user);
+        var loginResponse = await LoginCustomerAsync(email, password);
 
-        return new RegisterResponse
+        return new RegisterCustomerResponse
         {
-            RegistrationSucceeded = true,
-            UserId = user.Id,
-            Message = "Registration successful."
+            Token = loginResponse.Token,
         };
     }
     
-    public async Task<LoginResponse> LoginAsync(string username, string password)
+    public async Task<LoginCustomerResponse> LoginCustomerAsync(string email, string password)
     {
-        var user = await _userRepository.GetUserByUsernameAsync(username);
+        var user = await _customerRepository.GetCustomerByEmailAsync(email);
 
         if (user is null)
         {
-            return new LoginResponse
+            return new LoginCustomerResponse
             {
-                LoginSucceeded = false,
                 Token = null,
-                Message = "User not found."
             };
         }
             
@@ -73,19 +71,74 @@ public class AuthService : IAuthService
 
         if (!isPasswordValid)
         {
-            return new LoginResponse
+            return new LoginCustomerResponse
             {
-                LoginSucceeded = false,
                 Token = null,
-                Message = "Invalid credentials."
             };
         }
 
-        return new LoginResponse
+        return new LoginCustomerResponse
         {
-            LoginSucceeded = true,
             Token = _tokenService.GenerateToken(user),
-            Message = "Invalid credentials."
+        };
+    }
+    
+    public async Task<RegisterCompanyResponse> RegisterCompanyAsync(string email, string password, string name, string foundDate)
+    {
+        if (await _companyRepository.GetCompanyByEmailAsync(email) is not null)
+        {
+            return new RegisterCompanyResponse
+            {
+                Token = null,
+            };
+        }
+
+        var hashedPassword = _hashingService.Hash(password);
+
+        var newCompany = new Company
+        {
+            Email = email,
+            PasswordHash = hashedPassword,
+            Name = name,
+            FoundingDate = foundDate,
+            Role = UserRole.Company,
+            RegistrationDate = DateTimeOffset.Now
+        };
+        
+        await _companyRepository.AddAsync(newCompany);
+        var loginResponse = await LoginCompanyAsync(email, password);
+
+        return new RegisterCompanyResponse
+        {
+            Token = loginResponse.Token,
+        };
+    }
+    
+    public async Task<LoginCompanyResponse> LoginCompanyAsync(string email, string password)
+    {
+        var company = await _companyRepository.GetCompanyByEmailAsync(email);
+
+        if (company is null)
+        {
+            return new LoginCompanyResponse
+            {
+                Token = null,
+            };
+        }
+            
+        var isPasswordValid = _hashingService.Verify(company.PasswordHash, password);
+
+        if (!isPasswordValid)
+        {
+            return new LoginCompanyResponse
+            {
+                Token = null,
+            };
+        }
+
+        return new LoginCompanyResponse
+        {
+            Token = _tokenService.GenerateToken(company),
         };
     }
 }

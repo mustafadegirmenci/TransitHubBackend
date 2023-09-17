@@ -1,11 +1,9 @@
 using System.Security.Claims;
-using Application.Features.Company.AssignDriver;
-using Application.Features.Company.AssignVehicle;
-using Application.Features.Company.CreateDriver;
+using Application.Features.Company.Authorization.Login;
+using Application.Features.Company.Authorization.Register;
 using Application.Features.Company.CreateResponse;
-using Application.Features.Company.CreateTeam;
-using Application.Features.Company.CreateVehicle;
 using Application.Features.Company.GetAllRequests;
+using Application.Features.Company.GetCompanyInfo;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +21,55 @@ public class CompanyController : ControllerBase
     {
         _mediator = mediator;
     }
+    
+    [AllowAnonymous]
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromBody] RegisterCompanyRequest request)
+    {
+        try
+        {
+            var response = await _mediator.Send(request);
+            
+            if (response.Token is null)
+            {
+                return Problem();
+            }
+            
+            return Ok(new
+            {
+                Token = response.Token,
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { Message = "Registration failed.", Error = ex.Message });
+        }
+    }
+    
+    [AllowAnonymous]
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody] LoginCompanyRequest request)
+    {
+        try
+        {
+            var response = await _mediator.Send(request);
+            
+            if (response.Token is null)
+            {
+                return Problem();
+            }
+            
+            return Ok(new
+            {
+                Token = response.Token,
+            });
+
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { Message = "Login failed.", Error = ex.Message });
+        }
+    }
 
     [HttpGet("request/get")]
     public async Task<IActionResult> GetAllRequests()
@@ -37,6 +84,30 @@ public class CompanyController : ControllerBase
         try
         {
             var response = await _mediator.Send(new GetAllRequestsRequest());
+            return Ok(response.AllRequests);
+        }
+        catch
+        {
+            return BadRequest();
+        }
+    }
+  
+    [HttpGet("get")]
+    public async Task<IActionResult> GetCompanyInfo()
+    {
+        var userIdClaim =  User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        
+        if (userIdClaim is null) return Unauthorized();
+        if (!int.TryParse(userIdClaim, out var companyId)) return BadRequest();
+
+        var request = new GetCompanyInfoRequest
+        {
+            CompanyId = companyId
+        };
+        
+        try
+        {
+            var response = await _mediator.Send(request);
             return Ok(response);
         }
         catch
@@ -44,100 +115,9 @@ public class CompanyController : ControllerBase
             return BadRequest();
         }
     }
-    
-    [HttpPost("team/create")]
-    public async Task<IActionResult> CreateTeam([FromBody] CreateTeamRequest request)
-    {
-        var userIdClaim =  User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        
-        if (userIdClaim is null) return Unauthorized();
-        if (!int.TryParse(userIdClaim, out var userId)) return BadRequest();
-        
-        request.CompanyId = userId;
-        
-        try
-        {
-            await _mediator.Send(request);
-            return Ok();
-        }
-        catch
-        {
-            return BadRequest();
-        }
-    }
-    
-    [HttpPost("vehicle/create")]
-    public async Task<IActionResult> CreateVehicle([FromBody] CreateVehicleRequest request)
-    {
-        var userIdClaim =  User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        
-        if (userIdClaim is null) return Unauthorized();
-        if (!int.TryParse(userIdClaim, out var userId)) return BadRequest();
-        
-        request.CompanyId = userId;
-        
-        try
-        {
-            await _mediator.Send(request);
-            return Ok();
-        }
-        catch
-        {
-            return BadRequest();
-        }
-    }
-        
-    [HttpPost("vehicle/assign")]
-    public async Task<IActionResult> AssignVehicle([FromBody] AssignVehicleRequest request)
-    {
-        try
-        {
-            await _mediator.Send(request);
-            return Ok();
-        }
-        catch
-        {
-            return BadRequest();
-        }
-    }
-            
-    [HttpPost("driver/assign")]
-    public async Task<IActionResult> AssignDriver([FromBody] AssignDriverRequest request)
-    {
-        try
-        {
-            await _mediator.Send(request);
-            return Ok();
-        }
-        catch
-        {
-            return BadRequest();
-        }
-    }
-    
-    [HttpPost("driver/create")]
-    public async Task<IActionResult> CreateDriver([FromBody] CreateDriverRequest request)
-    {
-        var userIdClaim =  User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        
-        if (userIdClaim is null) return Unauthorized();
-        if (!int.TryParse(userIdClaim, out var userId)) return BadRequest();
-        
-        request.CompanyId = userId;
-        
-        try
-        {
-            await _mediator.Send(request);
-            return Ok();
-        }
-        catch
-        {
-            return BadRequest();
-        }
-    }
-    
-    [HttpPost("response/create")]
-    public async Task<IActionResult> CreateResponse([FromBody] CreateResponseRequest request)
+  
+    [HttpPost("offer/create")]
+    public async Task<IActionResult> CreateOffer([FromBody] CreateOfferRequest request)
     {
         try
         {

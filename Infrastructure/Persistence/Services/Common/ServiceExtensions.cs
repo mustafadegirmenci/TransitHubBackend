@@ -1,7 +1,6 @@
 using System.Security.Claims;
 using System.Text;
 using Application.Repositories.Entity;
-using Application.Repositories.Relationship;
 using Application.Services;
 using Domain.Constants;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -11,7 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Persistence.Context;
 using Persistence.Repositories.Entity;
-using Persistence.Repositories.Relationship;
 
 namespace Persistence.Services.Common;
 
@@ -23,17 +21,12 @@ public static class ServiceExtensions
 
         services.AddScoped<IChatRepository, ChatRepository>();
         services.AddScoped<ICompanyRepository, CompanyRepository>();
-        services.AddScoped<IDriverRepository, DriverRepository>();
+        services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<IMessageRepository, MessageRepository>();
         services.AddScoped<IRequestRepository, RequestRepository>();
         services.AddScoped<IReservationRepository, ReservationRepository>();
-        services.AddScoped<IResponseRepository, ResponseRepository>();
+        services.AddScoped<IOfferRepository, OfferRepository>();
         services.AddScoped<IReviewRepository, ReviewRepository>();
-        services.AddScoped<ITeamRepository, TeamRepository>();
-        services.AddScoped<IUserRepository, UserRepository>();
-        services.AddScoped<IVehicleRepository, VehicleRepository>();
-        
-        services.AddScoped<ITeamVehicleRepository, TeamVehicleRepository>();
 
         services.AddTransient<IHashingService, HashingService>();
         services.AddTransient<ITokenService, TokenService>();

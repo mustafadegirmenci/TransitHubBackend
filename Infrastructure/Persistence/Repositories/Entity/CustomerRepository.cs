@@ -6,17 +6,17 @@ using Persistence.Repositories.Common;
 
 namespace Persistence.Repositories.Entity;
 
-public class CompanyRepository : Repository<Company>, ICompanyRepository
+public class CustomerRepository : Repository<Customer>, ICustomerRepository
 {
     private ApplicationDbContext _context;
     
-    public CompanyRepository(ApplicationDbContext context) : base(context)
+    public CustomerRepository(ApplicationDbContext context) : base(context)
     {
         _context = context;
     }
-    
-    public async Task<Company?> GetCompanyByEmailAsync(string email)
+
+    public async Task<Customer?> GetCustomerByEmailAsync(string email)
     {
-        return await _context.Companies.FirstOrDefaultAsync(u => u.Email == email);
+        return await _context.Customers.FirstOrDefaultAsync(u => u.Email == email);
     }
 }

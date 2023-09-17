@@ -1,6 +1,10 @@
 using System.Security.Claims;
+using Application.Features.Customer.Authorization.Login;
+using Application.Features.Customer.Authorization.Register;
 using Application.Features.Customer.CreateRequest;
 using Application.Features.Customer.CreateReservation;
+using Application.Features.Customer.GetCustomerInfo;
+using Application.Features.Customer.GetOffers;
 using Application.Features.Customer.GetRequestsById;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -19,7 +23,79 @@ public class CustomerController : ControllerBase
     {
         _mediator = mediator;
     }
+    
+    [AllowAnonymous]
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromBody] RegisterCustomerRequest request)
+    {
+        try
+        {
+            var response = await _mediator.Send(request);
+            
+            if (response.Token is null)
+            {
+                return Problem();
+            }
+            
+            return Ok(new
+            {
+                Token = response.Token, 
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { Message = "Registration failed.", Error = ex.Message });
+        }
+    }
+    
+    [AllowAnonymous]
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody] LoginCustomerRequest request)
+    {
+        try
+        {
+            var response = await _mediator.Send(request);
 
+            if (response.Token is null)
+            {
+                return Problem();
+            }
+            
+            return Ok(new
+            {
+                Token = response.Token
+            });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { Message = "Login failed.", Error = ex.Message });
+        }
+    }
+  
+    [HttpGet("get")]
+    public async Task<IActionResult> GetCustomerInfo()
+    {
+        var userIdClaim =  User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        
+        if (userIdClaim is null) return Unauthorized();
+        if (!int.TryParse(userIdClaim, out var companyId)) return BadRequest();
+
+        var request = new GetCustomerInfoRequest()
+        {
+            CustomerId = companyId
+        };
+        
+        try
+        {
+            var response = await _mediator.Send(request);
+            return Ok(response);
+        }
+        catch
+        {
+            return BadRequest();
+        }
+    }
+    
     [HttpPost("request/create")]
     public async Task<IActionResult> CreateRequest([FromBody] CreateRequestRequest request)
     {
@@ -41,8 +117,8 @@ public class CustomerController : ControllerBase
         }
     }
     
-    [HttpGet("request/get_by_id")]
-    public async Task<IActionResult> GetRequestsById()
+    [HttpGet("request/get")]
+    public async Task<IActionResult> GetRequests()
     {
         var userIdClaim =  User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         
@@ -56,8 +132,27 @@ public class CustomerController : ControllerBase
 
         try
         {
-            await _mediator.Send(request);
-            return Ok();
+            var requests = await _mediator.Send(request);
+            return Ok(requests.Requests);
+        }
+        catch
+        {
+            return BadRequest();
+        }
+    }
+    
+    [HttpGet("offer/get")]
+    public async Task<IActionResult> GetOffers([FromBody] GetOffersRequest request)
+    {
+        var userIdClaim =  User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        
+        if (userIdClaim is null) return Unauthorized();
+        if (!int.TryParse(userIdClaim, out _)) return BadRequest();
+
+        try
+        {
+            var offers = await _mediator.Send(request);
+            return Ok(offers.Offers);
         }
         catch
         {

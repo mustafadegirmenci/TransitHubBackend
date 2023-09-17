@@ -20,8 +20,8 @@ public class CreateRequestHandler : IRequestHandler<CreateRequestRequest, Create
         {
             Status = RequestStatus.Active,
             TransportationType = request.TransportationType,
-            EarliestAcceptableDate = request.EarliestAcceptableDate,
-            LatestAcceptableDate = request.LatestAcceptableDate,
+            Source = request.Source,
+            Destination = request.Destination,
             UserId = request.UserId
         };
         

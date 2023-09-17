@@ -10,7 +10,7 @@ namespace Persistence.Services;
 
 public class TokenService : ITokenService
 {
-    public string GenerateToken(User user)
+    public string GenerateToken(BaseUser user)
     {
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Constants.JwtSecret));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
